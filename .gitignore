@@ -9,3 +9,13 @@ backend/cbt-api.exe
 *.exe
 .DS_Store
 Thumbs.db
+
+package.json
+package-lock.json
+node_modules/
+PRD_Sistem_Ujian_CBT_SMK_ANBK_TKA.docx
+backend/tmp/
+frontend/tmp/
+frontend/be.log
+backend/be.log
+
