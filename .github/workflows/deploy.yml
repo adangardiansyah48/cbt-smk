@@ -24,8 +24,7 @@ jobs:
           directory: frontend/dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy-backend:
-    needs: deploy-frontend
+  verify-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,11 +34,6 @@ jobs:
       - working-directory: backend
         run: |
           go mod download
+          go vet ./...
           go build -o cbt-api .
-      - uses: cloudflare/r2-action/upload@v1
-        with:
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          bucketName: cbt-api-releases
-          sourceDir: backend
-          destinationDir: releases/${{ github.sha }}
+          echo "backend build OK"
