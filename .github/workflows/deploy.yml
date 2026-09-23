@@ -1,0 +1,45 @@
+name: Deploy CBT SMK
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+      - uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          projectName: cbt-smk
+          directory: frontend/dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-backend:
+    needs: deploy-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - working-directory: backend
+        run: |
+          go mod download
+          go build -o cbt-api .
+      - uses: cloudflare/r2-action/upload@v1
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          bucketName: cbt-api-releases
+          sourceDir: backend
+          destinationDir: releases/${{ github.sha }}

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: cbt-api
+    env: docker
+    plan: free
+    dockerContext: ./backend
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: "8080"
+      - key: FRONTEND_ORIGIN
+        sync: false
+    healthCheckPath: /ping
+    healthCheckTimeoutMs: 5000
