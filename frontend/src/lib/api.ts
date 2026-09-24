@@ -1,4 +1,4 @@
-export const API = import.meta.env.VITE_API_URL || "http://localhost:8080"
+export const API = (import.meta.env.VITE_API_URL as string) || "https://backend-tau-one-28.vercel.app" // bump:2026-09-24-fix-cbt-fetch
 
 export function token() {
   return localStorage.getItem("cbt_token") || ""
