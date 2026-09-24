@@ -19,8 +19,12 @@ jobs:
         run: |
           npm ci
           VITE_API_URL=https://backend-tau-one-28.vercel.app VITE_SUPABASE_URL=https://znghhzfkuxqdokokqdwr.supabase.co VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2hoemZrdXhxZG9rb2txZHdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNDU1NjcsImV4cCI6MjEwNTcyMTU2N30.bnRoyqoMEOKg8L7gaWo9IroR9lZDw1TDLaYSniv1Sio npm run build
-      - run: npx wrangler@3 pages deploy frontend/dist --project-name=cbt-smk --branch=main
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          projectName: cbt-smk
+          directory: frontend/dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
