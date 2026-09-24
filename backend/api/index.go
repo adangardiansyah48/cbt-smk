@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	cbtapp "cbt-api/internal/app"
+	cbtapp "cbt-api/app"
 
 	"github.com/gofiber/adaptor/v2"
 )
